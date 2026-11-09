@@ -1,3 +1,4 @@
+
 public class EconomyCategory extends VehicleCategory {
 
     public EconomyCategory(BigDecimal dailyRate, BigDecimal deposit) {

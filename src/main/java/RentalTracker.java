@@ -1,7 +1,3 @@
-// Dovewing Car Rentals - fleet and rental tracker
-// Original program, left behind by a former colleague. It works, but the front
-// desk keeps a paper backup because they do not trust it. Run it first to see why,
-// and look closely at the active rentals in the end-of-day report.
 
 import java.util.*;
 
