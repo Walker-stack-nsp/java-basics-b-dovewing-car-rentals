@@ -58,6 +58,10 @@ public class Depot {
         return rental;
     }
 
+    public List<Renter> getRenters() {
+        return List.copyOf(renters);
+    }
+
     public List<Rental> getRentals() {
         return List.copyOf(rentals);
     }
