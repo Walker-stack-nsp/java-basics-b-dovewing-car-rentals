@@ -58,6 +58,11 @@ public class Depot {
         return rental;
     }
 
+    public boolean isAvailable(Vehicle vehicle) {
+        checkVehicleBelongsHere(vehicle);
+        return findActiveRental(vehicle) == null;
+    }
+
     public List<Vehicle> getVehicles() {
         return List.copyOf(vehicles.values());
     }
