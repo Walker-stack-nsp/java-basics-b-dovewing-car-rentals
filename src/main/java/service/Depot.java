@@ -58,6 +58,16 @@ public class Depot {
         return rental;
     }
 
+    public Rental returnVehicle(Vehicle vehicle) {
+        checkVehicleBelongsHere(vehicle);
+        var activeRental = findActiveRental(vehicle);
+        if (activeRental == null) {
+            throw new VehicleNotRentedException();
+        }
+        activeRental.markReturned();
+        return activeRental;
+    }
+
     public boolean isAvailable(Vehicle vehicle) {
         checkVehicleBelongsHere(vehicle);
         return findActiveRental(vehicle) == null;
