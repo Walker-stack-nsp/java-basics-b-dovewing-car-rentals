@@ -58,6 +58,10 @@ public class Depot {
         return rental;
     }
 
+    public List<Rental> getRentals() {
+        return List.copyOf(rentals);
+    }
+
     //Helpers
     private Rental findActiveRental(Vehicle vehicle) {
         for (Rental rental : rentals) {
