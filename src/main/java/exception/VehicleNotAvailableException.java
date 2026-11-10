@@ -1,3 +1,7 @@
+package exception;
+
+import model.Rental;
+
 public class VehicleNotAvailableException extends RentalException {
 
     public VehicleNotAvailableException(Rental rental) {

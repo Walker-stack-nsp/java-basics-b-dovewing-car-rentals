@@ -1,3 +1,7 @@
+package model;
+
+import java.util.Objects;
+
 public record Renter(int id, String name, MemberType memberType) {
 
     public Renter {

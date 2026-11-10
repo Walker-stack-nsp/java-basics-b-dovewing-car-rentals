@@ -1,3 +1,7 @@
+package model;
+
+import java.math.BigDecimal;
+
 public class PremiumCategory extends VehicleCategory {
 
     public PremiumCategory(BigDecimal dailyRate, BigDecimal deposit) {

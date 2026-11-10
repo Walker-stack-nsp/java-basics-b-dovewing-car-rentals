@@ -1,3 +1,7 @@
+package model;
+
+import java.math.BigDecimal;
+
 public abstract class VehicleCategory {
 
     private final BigDecimal dailyRate;

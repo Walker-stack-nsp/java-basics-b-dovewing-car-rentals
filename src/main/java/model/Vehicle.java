@@ -1,3 +1,7 @@
+package model;
+
+import java.util.Objects;
+
 public record Vehicle (int id, String model, String registration, VehicleCategory category) {
 
     public Vehicle {

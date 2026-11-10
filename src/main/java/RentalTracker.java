@@ -1,4 +1,9 @@
 
+import exception.RentalException;
+import model.*;
+import service.Depot;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 public class RentalTracker {

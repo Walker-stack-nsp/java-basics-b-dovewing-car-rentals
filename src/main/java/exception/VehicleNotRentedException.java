@@ -1,3 +1,5 @@
+package exception;
+
 public class VehicleNotRentedException extends RentalException {
     
     public VehicleNotRentedException() {

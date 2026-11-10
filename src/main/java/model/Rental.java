@@ -1,3 +1,7 @@
+package model;
+
+import java.math.BigDecimal;
+
 public class Rental {
 
     private final int id;
@@ -17,6 +21,7 @@ public class Rental {
         this.deposit = deposit;
         this.returned = false;
     }
+
 
     public int getId() {
         return id;
