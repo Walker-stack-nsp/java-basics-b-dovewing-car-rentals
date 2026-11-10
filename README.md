@@ -10,9 +10,7 @@ A rebuild of the single-file `RentalTracker` program left behind at the Dovewing
 You need Java 21 and Maven.
 
 ```bash
-mvn test                                        # run the tests
-mvn package                                     # build the jar
-java -jar target/dovewing-car-rentals-1.0.0.jar # run the demo day
+java -cp target/classes RentalTracker # run the demo day
 ```
 
 ## Structure
