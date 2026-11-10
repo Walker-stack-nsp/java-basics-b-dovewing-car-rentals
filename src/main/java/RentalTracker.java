@@ -1,5 +1,6 @@
 
-import exception.RentalException;
+import exception.VehicleNotAvailableException;
+import exception.VehicleNotRentedException;
 import model.*;
 import service.Depot;
 
@@ -38,7 +39,7 @@ public class RentalTracker {
             System.out.println("Rented " + describe(vehicle) + " to " + renter.name()
                     + " for " + days + " days, cost GHS " + format(rental.getCost())
                     + ", deposit GHS " + format(rental.getDeposit()));
-        } catch (RentalException refusal) {
+        } catch (VehicleNotAvailableException refusal) {
             System.out.println("Cannot rent " + describe(vehicle) + " to " + renter.name()
                     + ": " + refusal.getMessage());
         }
@@ -48,7 +49,7 @@ public class RentalTracker {
         try {
             depot.returnVehicle(vehicle);
             System.out.println("Returned " + describe(vehicle));
-        } catch (RentalException refusal) {
+        } catch (VehicleNotRentedException refusal) {
             System.out.println("Cannot return " + describe(vehicle) + ": " + refusal.getMessage());
         }
     }
