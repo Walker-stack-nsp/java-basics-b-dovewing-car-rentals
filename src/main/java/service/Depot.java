@@ -56,7 +56,7 @@ public class Depot {
         }
         var activeRental = findActiveRental(vehicle);
         if (activeRental != null) {
-            throw new VehicleNotAvailableException(activeRental);
+            throw new VehicleNotAvailableException(activeRental.getId());
         }
 
         // Every check has passed: only now do we change anything.
