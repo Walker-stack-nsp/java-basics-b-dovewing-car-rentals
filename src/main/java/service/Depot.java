@@ -56,7 +56,7 @@ public class Depot {
         }
         var activeRental = findActiveRental(vehicle);
         if (activeRental != null) {
-            throw new VehicleNotAvailableException(activeRental.getId());
+            throw new VehicleNotAvailableException(vehicle);
         }
 
         // Every check has passed: only now do we change anything.
@@ -73,7 +73,7 @@ public class Depot {
         checkVehicleBelongsHere(vehicle);
         var activeRental = findActiveRental(vehicle);
         if (activeRental == null) {
-            throw new VehicleNotRentedException();
+            throw new VehicleNotRentedException(vehicle);
         }
         activeRental.markReturned();
         return activeRental;
