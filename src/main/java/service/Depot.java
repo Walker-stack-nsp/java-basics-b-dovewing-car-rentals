@@ -99,7 +99,7 @@ public class Depot {
     public List<Rental> getActiveRentals() {
         List<Rental> activeRentals = new ArrayList<>();
         for (Rental rental : rentals) {
-            if (rental.isReturned()) {
+            if (!rental.isReturned()) {
                 activeRentals.add(rental);
             }
         }
