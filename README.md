@@ -21,7 +21,7 @@ java -jar target/dovewing-car-rentals-1.0.0.jar # run the demo day
 
 | Package | Classes | Job |
 |---|---|---|
-| `app` | `RentalTrackerApp` | Runs the demo day and does **all** the printing |
+| `java` | `RentalTrackerApp` | Runs the demo day and does **all** the printing |
 | `service` | `Depot` | Keeps the vehicles, renters and rentals, and enforces the rules |
 | `model` | `Renter`, `Vehicle`, `Rental`, `MemberType`, `VehicleCategory`, `EconomyCategory`, `PremiumCategory` | The data, and the pricing and deposit rules |
 | `exception` | `RentalException`, `VehicleNotAvailableException`, `VehicleNotRentedException` | Requests the depot refuses |
@@ -77,7 +77,7 @@ A `double` cannot store many decimal amounts exactly, for example `0.1 + 0.2` is
 
 ### 7. Printing lives only in the app
 
-`Depot` decides and records; it never prints. `RentalTrackerApp` turns the results into text. The rules can therefore be tested without reading console output, and a message can change without touching rental logic.
+`Depot` decides and records; it never prints. `RentalTracker` turns the results into text. The rules can therefore be tested without reading console output, and a message can change without touching rental logic.
 
 ### 8. Ids are issued by the depot
 
@@ -117,30 +117,12 @@ depot.addVehicle("Mercedes Sprinter", "GW-9012-23",
 
 **What changes:** one new file, plus the line that creates vans.
 
-**What does not change:** `Depot`, `Rental`, `Vehicle`, `EconomyCategory`, `PremiumCategory`, and the report. The test `newCategoryNeedsNoDepotChange` proves this with a stand-in van.
+**What does not change:** `Depot`, `Rental`, `Vehicle`, `EconomyCategory`, `PremiumCategory`, and the report.
 
 **What the original would have forced:**
 - A third `else if` inside `Depot.rent()`, with the pricing code copied again.
 - Another category string, where a typo silently gives a free rental.
 - Retesting economy and premium, because all three would share one method.
-
----
-
-## Changes from the design sketch
-
-The sketch in `DIAGNOSIS.md` was my starting plan. These are the changes I made while building, and why:
-
-| Sketch | Final | Why |
-|---|---|---|
-| `Category` enum + `VehicleCategory` data class (`id`, `category`, `dailyRate`) | Abstract `VehicleCategory` with `EconomyCategory` and `PremiumCategory` subclasses | With an enum, the deposit rule would need an `if`/`else` in `Depot`, so the van would mean editing `Depot`. With subclasses, the van is one new class. |
-| No deposit anywhere | `deposit` on `VehicleCategory`, with `calculateDeposit(renter)` | The original charges a deposit; the sketch missed it. |
-| `printReport()` in `Depot` | Printing moved to `RentalTrackerApp` | Printing mixed with business rules was one of the diagnosed problems (F7). |
-| `renters` as `Map<String, Renter>`, keyed by name | `List<Renter>` | Names are not unique (F8). |
-| `Renter` with an `isMember` boolean *and* a `MemberType` enum | A `memberType` field plus an `isMember()` method | One source for membership instead of two. |
-| `RentalException` listing the two exceptions as members | A parent class with two subclasses | They are types, not fields. One `catch` handles both. |
-| Mixed `String` and `int` ids; `VehicleCategory` had an id | All ids are `int`, issued by the depot; the category id was removed | Consistency. Replaces the shared static counters. The category id was never used. |
-| `getRentals()` | Returns a copy. Added `getActiveRentals()` and `isAvailable()` | Returning the real list was a leak (F3). The report needs the active rentals. |
-| `Renter` and `Vehicle` as classes | Records | Their data never changes, and validation lives in one place. |
 
 ---
 
@@ -166,21 +148,7 @@ One more deliberate change: **returning a car that is not out is now refused.** 
 
 ## How it runs on the JVM
 
-- `java -jar` starts the JVM, which loads `RentalTrackerApp` and runs `main`. Other classes, such as `Depot` and `Rental`, are loaded as they are first needed, not all at startup. Their class information is kept in **metaspace**.
+- `java -jar` starts the JVM, which loads `RentalTracker` and runs `main`. Other classes, such as `Depot` and `Rental`, are loaded as they are first needed, not all at startup. Their class information is kept in **metaspace**.
 - Every object (the depot, its vehicles, rentals and `BigDecimal` amounts) lives on the **heap**. Local variables and parameters, such as `var rental` inside `rent()`, live in that method call's **stack frame** and disappear when the method returns.
 - A `Rental` is never garbage collected while the depot exists, because the depot's `rentals` list still refers to it. The copies returned by `getRentals()` become garbage once the caller is done with them.
 - The original's `static` counters belonged to the class and were shared by every depot. The counters are now fields of each `Depot` object on the heap.
-
-## Tests
-
-`mvn test` runs:
-
-- **`DepotTest`**:
-  - cost and deposit rules for casual renters and members
-  - return and re-rent
-  - **double rental refused with nothing changed**
-  - return of a car that is not out refused
-  - invalid days and duplicate registrations rejected
-  - read-only lists
-  - a stand-in commercial van working with no change to `Depot`
-- **`RentalTrackerAppTest`**: the demo output matches the original, except the refused double rental.
