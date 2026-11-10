@@ -1,8 +1,10 @@
 package exception;
 
-public class VehicleNotRentedException extends RentalException {
+import model.Vehicle;
+
+public class VehicleNotRentedException extends RuntimeException{
     
-    public VehicleNotRentedException() {
-        super("Vehicle is not rented");
+    public VehicleNotRentedException(Vehicle vehicle) {
+        System.out.printf("Vehicle model : %s with id: %s is not rented\n", vehicle.id(), vehicle.model());
     }
 }
