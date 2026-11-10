@@ -96,6 +96,16 @@ public class Depot {
         return List.copyOf(rentals);
     }
 
+    public List<Rental> getActiveRentals() {
+        List<Rental> activeRentals = new ArrayList<>();
+        for (Rental rental : rentals) {
+            if (rental.isReturned()) {
+                activeRentals.add(rental);
+            }
+        }
+        return activeRentals;
+    }
+
     //Helpers
     private Rental findActiveRental(Vehicle vehicle) {
         for (Rental rental : rentals) {
