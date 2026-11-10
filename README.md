@@ -15,14 +15,14 @@ java -cp target/classes RentalTracker # run the demo day
 
 ## Structure
 
-![Architecture](rental.arch.png)
+![Architecture](rental.updated.png)
 
 | Package | Classes | Job |
 |---|---|---|
 | `java` | `RentalTrackerApp` | Runs the demo day and does **all** the printing |
 | `service` | `Depot` | Keeps the vehicles, renters and rentals, and enforces the rules |
 | `model` | `Renter`, `Vehicle`, `Rental`, `MemberType`, `VehicleCategory`, `EconomyCategory`, `PremiumCategory` | The data, and the pricing and deposit rules |
-| `exception` | `RentalException`, `VehicleNotAvailableException`, `VehicleNotRentedException` | Requests the depot refuses |
+| `exception` | `VehicleNotAvailableException`, `VehicleNotRentedException` | Requests the depot refuses |
 
 ---
 
@@ -67,7 +67,7 @@ The original stored this fact twice, once on the vehicle (`status`) and once on 
 
 ### 5. Refusals are exceptions, and checks come before changes
 
-`rent()` and `returnVehicle()` check everything first, and only then change anything. A refused request throws a `RentalException` subclass and leaves the records exactly as they were. The app catches that one parent type and prints the refusal.
+`rent()` and `returnVehicle()` check everything first, and only then change anything. A refused request throws an exception and leaves the records exactly as they were. The app catches that one parent type and prints the refusal.
 
 ### 6. Money uses `BigDecimal`
 
@@ -132,7 +132,8 @@ The output is identical, except for the request the business said must never suc
 Rented Toyota Vitz (GT-1234-20) to Kofi Mensah for 3 days, cost GHS 450.0, deposit GHS 500.0
 Rented Toyota Prado (GR-5678-22) to Ama Owusu for 2 days, cost GHS 1200.0, deposit GHS 0.0
 Returned Toyota Prado (GR-5678-22)
-Cannot rent Toyota Vitz (GT-1234-20) to Ama Owusu: already rented (Rental #1)
+Vehicle model : Toyota Vitz with id: 1 is not available
+Cannot rent Toyota Vitz (GT-1234-20) to Ama Owusu: null
 
 === Dovewing Car Rentals - end of day ===
 Fleet status:
